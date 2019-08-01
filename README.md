@@ -9,4 +9,5 @@
 支持根据需求针对图像灰度化、二进制化、裁剪；  
 支持快速截图保存；  
 集成了国内第一款桌面自动化解决方案SuperPatrick的dll接口；  
+网址：http://www.autotestops.com/index/superpatrick.html  
 后续使用说明会在博客更新；  
