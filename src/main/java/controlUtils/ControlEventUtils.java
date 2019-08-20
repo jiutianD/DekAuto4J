@@ -218,7 +218,7 @@ public class ControlEventUtils {
                 break;
             case MouseEvent.TYPE_PIC_CLICK:
                 ScreenHelper.getScreen("dekAutoPic.bmp");
-//                tools.ScreenHelper.getScreenByPrintScreen("screenRect1.bmp");
+//                tools.ScreenHelper.getScreenByPrintScreen("dekAutoPic.bmp");
                 Point p = OpenCvUtils.findPicInPic(mouseEvent.picPath, ScreenHelper.filePath + "\\dekAutoPic.bmp");
                 mouseClick((int) p.x, (int) p.y, MOUSE_LEFT_BUTTON);
                 break;

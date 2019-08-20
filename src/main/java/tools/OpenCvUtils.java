@@ -10,7 +10,6 @@ public class OpenCvUtils {
     //二进制处理
     public static final int PIC_BINARY = 1;
 
-
     /**
      * 模版匹配的种类类型
      * TM_SQDIFF = 0,
@@ -22,6 +21,7 @@ public class OpenCvUtils {
      *
      * @param args
      */
+
     /**
      * 初始化OpenCv的Dll
      * dllPath：为本地存放OpenCv dll的路径
@@ -33,7 +33,7 @@ public class OpenCvUtils {
     }
 
     /**
-     * 根据小图，查找小图在大图中的位置
+     * 根据小图，查找小图在大图中的位置，返回坐标
      * Point：为小图的中心坐标点
      *
      * @param sPicPath
@@ -50,15 +50,33 @@ public class OpenCvUtils {
         //获得最可能点，MinMaxLocResult是其数据格式，包括了最大、最小点的位置x、y
         Core.MinMaxLocResult mlr = Core.minMaxLoc(result);
         Point matchLoc = mlr.minLoc;
-        //Imgproc.rectangle(bPic, matchLoc, new Point(matchLoc.x + sPic.width(), matchLoc.y + sPic.height()), new Scalar(0, 0, 255), 2);
-        //将结果输出到对应位置
-        //Imgcodecs.imwrite(tools.ScreenHelper.filePath + "\\res.png", bPic);
         return new Point((matchLoc.x + sPic.width() / 2), (matchLoc.y + sPic.height() / 2));
     }
-//        System.out.println(mlr.minVal);
-//        System.out.println(mlr.maxVal);
-//        System.out.println("左上坐标："+"["+matchLoc.x +","+matchLoc.y +"]");
-//        System.out.println("宽高坐标：" + "[" + sPic.width() + ", " + sPic.height() + "]");
+
+    /**
+     * 大图中找小图，并且在工程根目录生产res.png的结果图
+     *
+     * @param sPicPath
+     * @param bPicPath
+     */
+    public static void findSmallInLarger(String sPicPath, String bPicPath) {
+        Mat sPic = Imgcodecs.imread(sPicPath);
+        Mat bPic = Imgcodecs.imread(bPicPath);
+        Mat result = Mat.zeros(bPic.rows() - sPic.rows() + 1, bPic.cols() - sPic.cols() + 1, CvType.CV_32FC1);
+        Imgproc.matchTemplate(sPic, bPic, result, Imgproc.TM_SQDIFF_NORMED);
+        //规格化
+        Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1);
+        //获得最可能点，MinMaxLocResult是其数据格式，包括了最大、最小点的位置x、y
+        Core.MinMaxLocResult mlr = Core.minMaxLoc(result);
+        Point matchLoc = mlr.minLoc;
+        Imgproc.rectangle(bPic, matchLoc, new Point(matchLoc.x + sPic.width(), matchLoc.y + sPic.height()), new Scalar(0, 0, 255), 2);
+        //将结果输出到对应位置
+        Imgcodecs.imwrite(ScreenHelper.filePath + "\\res.png", bPic);
+        System.out.println(mlr.minVal);
+        System.out.println(mlr.maxVal);
+        System.out.println("左上坐标：" + "[" + matchLoc.x + "," + matchLoc.y + "]");
+        System.out.println("宽高坐标：" + "[" + sPic.width() + ", " + sPic.height() + "]");
+    }
 
     /**
      * 图片处理
@@ -101,6 +119,6 @@ public class OpenCvUtils {
         Mat img = new Mat(src, rect);
         Mat tmp = new Mat();
         img.copyTo(tmp);
-        Imgcodecs.imwrite(outPutName + ".png", tmp);
+        Imgcodecs.imwrite(outPutName, tmp);
     }
 }

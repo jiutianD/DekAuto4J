@@ -7,6 +7,5 @@ public class InputTextTest {
     public static void main(String[] args) throws Exception {
         ControlEventUtils.inputText("//DekAuto4J Test");
         //鼠标点击这里，焦点到这里，然后运行
-
     }
 }

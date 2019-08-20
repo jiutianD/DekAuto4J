@@ -6,11 +6,11 @@ import java.io.File;
 
 public class OcrUtils {
     /**
-     * 图片路径，ocr路径，ocr字库
+     * 根据图片，解析出图片中的文字
      *
-     * @param filePath
-     * @param ocrPath
-     * @param ocrType
+     * @param filePath：图片路径
+     * @param ocrPath：ocr路径
+     * @param ocrType：ocr字库
      * @return
      */
     public static String getStrFromPic(String filePath, String ocrPath, String ocrType) {

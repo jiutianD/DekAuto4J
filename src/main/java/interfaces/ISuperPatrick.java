@@ -38,10 +38,10 @@ public interface ISuperPatrick extends Library {
      * 静态图片识别点击（指定坐标区域）
      *
      * @param strPartImage
-     * @param a
-     * @param b
-     * @param c
-     * @param d
+     * @param a left
+     * @param b top
+     * @param c right
+     * @param d bottom
      * @return
      */
     boolean findStaticImage(String strPartImage, int a, int b, int c, int d);

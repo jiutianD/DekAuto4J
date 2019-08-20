@@ -48,12 +48,12 @@ public class MouseInfo extends JFrame {
         contentPanel.setLayout(null);
 
         JLabel lblx = new JLabel("\u5750\u6807x:");
-        lblx.setFont(new Font("宋体", Font.PLAIN, 15));
+        lblx.setFont(new Font("黑体", Font.PLAIN, 15));
         lblx.setBounds(22, 27, 66, 31);
         contentPanel.add(lblx);
 
         JLabel lbly = new JLabel("\u5750\u6807y:");
-        lbly.setFont(new Font("宋体", Font.PLAIN, 15));
+        lbly.setFont(new Font("黑体", Font.PLAIN, 15));
         lbly.setBounds(22, 68, 66, 31);
         contentPanel.add(lbly);
 
