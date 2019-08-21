@@ -12,4 +12,4 @@
 网址：http://www.autotestops.com/index/superpatrick.html  
 框架相关依赖资源已同步到百度网盘；  
 链接: https://pan.baidu.com/s/16v1hLquyU6Aqst0YmEN1rg 提取码: fgxy ；  
-后续使用说明以及OCR相关依赖文件等会在博客更新；  
+后续使用说明等会在博客更新；  
