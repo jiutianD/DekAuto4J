@@ -4,13 +4,11 @@ import org.opencv.core.Point;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.InputEvent;
 import java.io.IOException;
 
 /**
  * 2019-5-28-19-15
  * 当前初步整合完毕
- * 鼠标滚轮的相关方法暂时没有写
  */
 public class ControlEventUtils {
     static Robot robot;
@@ -181,6 +179,19 @@ public class ControlEventUtils {
     }
 
     /**
+     * @param type:鼠标事件的类型
+     * @param waitTime：图片等候出现的时间
+     * @param picPath：所等待的图片的路径
+     * @return
+     * @throws Exception
+     */
+    public static ControlEventUtils mouseEvent(int type, long waitTime, String picPath) throws Exception {
+        MouseEvent event = new MouseEvent(type, waitTime, picPath);
+        mouseEvent(event);
+        return new ControlEventUtils();
+    }
+
+    /**
      * 鼠标事件处理
      *
      * @param mouseEvent
@@ -188,7 +199,7 @@ public class ControlEventUtils {
      * @throws Exception
      * @Link MouseEvent
      */
-    private static ControlEventUtils mouseEvent(MouseEvent mouseEvent) throws Exception {
+    public static ControlEventUtils mouseEvent(MouseEvent mouseEvent) throws Exception {
         robot = new Robot();
         switch (mouseEvent.type) {
             case MouseEvent.TYPE_MOVE:
@@ -204,7 +215,7 @@ public class ControlEventUtils {
                 mouseClick(mouseEvent.x, mouseEvent.y, MOUSE_LEFT_BUTTON);
                 break;
             case MouseEvent.TYPE_RIGHT_CLICK:
-                mouseClick(mouseEvent.x, mouseEvent .y, MOUSE_RIGHT_BUTTON);
+                mouseClick(mouseEvent.x, mouseEvent.y, MOUSE_RIGHT_BUTTON);
                 break;
             case MouseEvent.TYPE_MID_CLICK:
                 mouseClick(mouseEvent.x, mouseEvent.y, MOUSE_MID_BUTTON);
@@ -217,15 +228,32 @@ public class ControlEventUtils {
                 mouseLongClick(mouseEvent.x, mouseEvent.y, mouseEvent.time, MOUSE_LEFT_BUTTON);
                 break;
             case MouseEvent.TYPE_PIC_CLICK:
-                ScreenHelper.getScreen("dekAutoPic.bmp");
-//                tools.ScreenHelper.getScreenByPrintScreen("dekAutoPic.bmp");
-                Point p = OpenCvUtils.findPicInPic(mouseEvent.picPath, ScreenHelper.filePath + "\\dekAutoPic.bmp");
+                ScreenUtils.getScreen("dekAutoPic.bmp");
+//                tools.ScreenUtils.getScreenByPrintScreen("dekAutoPic.bmp");
+                Point p = OpenCvUtils.findPicInPic(mouseEvent.picPath, ScreenUtils.filePath + "\\dekAutoPic.bmp");
                 mouseClick((int) p.x, (int) p.y, MOUSE_LEFT_BUTTON);
                 break;
             case MouseEvent.TYPE_AREA_PIC_CLICK:
-                ScreenHelper.getScreen("dekAutoPic.bmp", mouseEvent.rectangle);
-                Point pa = OpenCvUtils.findPicInPic(mouseEvent.picPath, ScreenHelper.filePath + "\\dekAutoPic.bmp");
-                mouseClick((int) (pa.x + mouseEvent.rectangle.x), (int) (pa.y + mouseEvent.rectangle.y), MOUSE_LEFT_BUTTON);
+                ScreenUtils.getScreen("dekAutoPic.bmp", mouseEvent.rectangle);
+                Point areaP = OpenCvUtils.findPicInPic(mouseEvent.picPath, ScreenUtils.filePath + "\\dekAutoPic.bmp");
+                mouseClick((int) (areaP.x + mouseEvent.rectangle.x), (int) (areaP.y + mouseEvent.rectangle.y), MOUSE_LEFT_BUTTON);
+                break;
+            case MouseEvent.TYPE_PIC_WAIT_CLICK:
+                PicWaitThread picWaitThread = new PicWaitThread(mouseEvent.picPath,mouseEvent.waitTime);
+                picWaitThread.start();
+                int count = 0;
+                while (!PicWaitThread.flag) {
+                    Thread.sleep(50);
+                    count++;
+                    if (count >= mouseEvent.waitTime / 50) {
+                        MouseEvent.isWaitEnd = true;
+                        break;
+                    }
+                    if (PicWaitThread.flag) {
+                        Point waitP = PicWaitThread.point;
+                        mouseClick((int) waitP.x, (int) waitP.y, MOUSE_LEFT_BUTTON);
+                    }
+                }
                 break;
             default:
                 break;

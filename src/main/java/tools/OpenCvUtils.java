@@ -40,17 +40,22 @@ public class OpenCvUtils {
      * @param bPicPath
      * @return
      */
-    public static Point findPicInPic(String sPicPath, String bPicPath) {
+    public static Point findPicInPic(String sPicPath, String bPicPath) throws InterruptedException {
         Mat sPic = Imgcodecs.imread(sPicPath);
         Mat bPic = Imgcodecs.imread(bPicPath);
         Mat result = Mat.zeros(bPic.rows() - sPic.rows() + 1, bPic.cols() - sPic.cols() + 1, CvType.CV_32FC1);
+        Thread.sleep(20);
         Imgproc.matchTemplate(sPic, bPic, result, Imgproc.TM_SQDIFF_NORMED);
         //规格化
         Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1);
         //获得最可能点，MinMaxLocResult是其数据格式，包括了最大、最小点的位置x、y
         Core.MinMaxLocResult mlr = Core.minMaxLoc(result);
+        System.out.println(mlr.maxVal);
+        if (mlr.maxVal < 0.5) {
+            return null;
+        }
         Point matchLoc = mlr.minLoc;
-        return new Point((matchLoc.x + sPic.width() / 2), (matchLoc.y + sPic.height() / 2));
+        return matchLoc == null ? null : new Point((matchLoc.x + sPic.width() / 2), (matchLoc.y + sPic.height() / 2));
     }
 
     /**
@@ -71,7 +76,7 @@ public class OpenCvUtils {
         Point matchLoc = mlr.minLoc;
         Imgproc.rectangle(bPic, matchLoc, new Point(matchLoc.x + sPic.width(), matchLoc.y + sPic.height()), new Scalar(0, 0, 255), 2);
         //将结果输出到对应位置
-        Imgcodecs.imwrite(ScreenHelper.filePath + "\\res.png", bPic);
+        Imgcodecs.imwrite(ScreenUtils.filePath + "\\res.png", bPic);
         System.out.println(mlr.minVal);
         System.out.println(mlr.maxVal);
         System.out.println("左上坐标：" + "[" + matchLoc.x + "," + matchLoc.y + "]");
@@ -93,14 +98,14 @@ public class OpenCvUtils {
         switch (handleType) {
 //            Imgproc.rectangle
             case PIC_GRAY:
-                Imgcodecs.imwrite(ScreenHelper.filePath + "/" + picName, src);
+                Imgcodecs.imwrite(ScreenUtils.filePath + "/" + picName, src);
                 break;
             case PIC_BINARY:
                 Mat dst = new Mat();
                 //blockSize的数字必须%2 ==1才可以，其次值越大，图形里面的像素越粗，图越大
                 //maxValue:值越大，图像越亮，反之越暗
                 Imgproc.adaptiveThreshold(src, dst, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY, 7, 5);
-                Imgcodecs.imwrite(ScreenHelper.filePath + "/" + picName, dst);
+                Imgcodecs.imwrite(ScreenUtils.filePath + "/" + picName, dst);
                 break;
             default:
                 break;

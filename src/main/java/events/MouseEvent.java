@@ -7,7 +7,10 @@ public class MouseEvent {
     public int y;
     public String picPath;
     public long time;
+    public long waitTime;
     public Rectangle rectangle;
+
+    public static boolean isWaitEnd = false;
 
     public final static int TYPE_MOVE = 0;
     public final static int TYPE_DRAGMOVE = 1;
@@ -21,6 +24,8 @@ public class MouseEvent {
     public final static int TYPE_MOUSE_WHEEL = 256;
     public final static int TYPE_LEFT_LONGCLICK = 512;
     public final static int TYPE_AREA_PIC_CLICK = 1024;
+    public final static int TYPE_PIC_WAIT_CLICK = 2048;
+    public final static int TYPE_AREA_PIC_WAIT_CLICK = 4096;
 
 
     public MouseEvent(int type, int x, int y) {
@@ -44,6 +49,12 @@ public class MouseEvent {
     public MouseEvent(int type, Rectangle rectangle, String picPath) {
         this.type = type;
         this.rectangle = rectangle;
+        this.picPath = picPath;
+    }
+
+    public MouseEvent(int type, long waitTime, String picPath) {
+        this.type = type;
+        this.waitTime = waitTime;
         this.picPath = picPath;
     }
 

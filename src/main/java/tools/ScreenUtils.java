@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class ScreenHelper {
+public class ScreenUtils {
     public static String filePath = System.getProperty("user.dir");
 
     /**

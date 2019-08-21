@@ -9,6 +9,7 @@ public class HandlePicTest {
      */
     public static void main(String args[]) {
         String filePath = System.getProperty("user.dir");
+        //修改成自己本地的openCv的dll路径
         OpenCvUtils.intiOpenCvDll("D:\\opencv-Java\\opencv_java401.dll");
 
         //灰度处理图片，并保存为GrayTest.png在工程根目录
