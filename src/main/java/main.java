@@ -7,6 +7,5 @@ public class main {
         MouseEvent mouseEvent = new MouseEvent(MouseEvent.TYPE_PIC_WAIT_CLICK,3000,filePath+"\\waitTestPic.png");
 //        ControlEventUtils.mouseEvent(MouseEvent.TYPE_PIC_WAIT_CLICK,3000,filePath+"\\waitTestPic.png");
         ControlEventUtils.mouseEvent(mouseEvent);
-
     }
 }

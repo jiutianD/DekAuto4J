@@ -27,11 +27,18 @@ public class MouseEvent {
     public final static int TYPE_PIC_WAIT_CLICK = 2048;
     public final static int TYPE_AREA_PIC_WAIT_CLICK = 4096;
 
+    public void versionJudge(int x, int y) {
+        if (SystemInfoUtils.getSystemVersion().equals("10.0")) {
+            this.x = (int) (x * 0.8);
+            this.y = (int) (y * 0.8);
+        }
+    }
 
     public MouseEvent(int type, int x, int y) {
         this.type = type;
         this.x = x;
         this.y = y;
+        versionJudge(x, y);
     }
 
     public MouseEvent(int type, int x, int y, long time) {
@@ -39,6 +46,7 @@ public class MouseEvent {
         this.x = x;
         this.y = y;
         this.time = time;
+        versionJudge(x, y);
     }
 
     public MouseEvent(int type, String picPath) {
